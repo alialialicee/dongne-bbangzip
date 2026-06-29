@@ -9,10 +9,19 @@ interface KakaoDocument {
   address_name: string;
   phone: string;
   place_url: string;
+  distance?: string;
 }
 
 interface KakaoKeywordResponse {
   documents: KakaoDocument[];
+}
+
+function getSingleQueryParam(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+function hasLocationParams(x: string | undefined, y: string | undefined) {
+  return Boolean(x?.trim() && y?.trim());
 }
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
@@ -21,11 +30,16 @@ export default async function handler(request: VercelRequest, response: VercelRe
     return response.status(405).json({ message: 'GET 요청만 사용할 수 있어요.' });
   }
 
-  const rawQuery = Array.isArray(request.query.q) ? request.query.q[0] : request.query.q;
+  const rawQuery = getSingleQueryParam(request.query.q);
   const q = rawQuery?.trim();
+  const x = getSingleQueryParam(request.query.x)?.trim();
+  const y = getSingleQueryParam(request.query.y)?.trim();
+  const isLocationSearch = hasLocationParams(x, y);
 
-  if (!q) {
-    return response.status(400).json({ message: '검색할 동네나 지명을 q 파라미터로 전달해 주세요.' });
+  if (!q && !isLocationSearch) {
+    return response.status(400).json({
+      message: '검색할 동네나 지명을 q 파라미터로 전달하거나 현재 위치 좌표를 x/y 파라미터로 전달해 주세요.',
+    });
   }
 
   const kakaoRestApiKey = process.env.KAKAO_REST_API_KEY;
@@ -34,11 +48,20 @@ export default async function handler(request: VercelRequest, response: VercelRe
     return response.status(500).json({ message: '서버에 카카오 REST API 키가 설정되어 있지 않아요.' });
   }
 
-  const searchParams = new URLSearchParams({
-    query: `${q} 빵집`,
-    size: '15',
-    page: '1',
-  });
+  const searchParams = isLocationSearch
+    ? new URLSearchParams({
+        query: '빵집',
+        x: x ?? '',
+        y: y ?? '',
+        radius: '2000',
+        sort: 'distance',
+        size: '15',
+      })
+    : new URLSearchParams({
+        query: `${q} 빵집`,
+        size: '15',
+        page: '1',
+      });
 
   try {
     const kakaoResponse = await fetch(
@@ -66,6 +89,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
       address_name: document.address_name,
       phone: document.phone,
       place_url: document.place_url,
+      distance: document.distance,
     }));
 
     return response.status(200).json({ bakeries });
