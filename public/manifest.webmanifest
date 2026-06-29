@@ -1,0 +1,18 @@
+{
+  "name": "동네빵집",
+  "short_name": "빵집",
+  "description": "동네 이름이나 현재 위치로 가까운 빵집을 찾아주는 앱",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/",
+  "theme_color": "#8b4a24",
+  "background_color": "#fff4df",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
