@@ -6,6 +6,7 @@ export interface Bakery {
   address_name: string;
   phone: string;
   place_url: string;
+  distance?: string;
 }
 
 export interface BakeriesResponse {

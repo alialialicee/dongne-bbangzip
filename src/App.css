@@ -108,6 +108,7 @@ h1 {
 }
 
 .search-row button,
+.location-button,
 .review-link {
   border: 0;
   border-radius: 18px;
@@ -123,7 +124,18 @@ h1 {
   padding: 0 26px;
 }
 
+.search-row .location-button {
+  border: 2px solid #d47a25;
+  background: #fff8ec;
+  color: #b96216;
+}
+
+.search-row .location-button:hover:not(:disabled) {
+  background: #fff3df;
+}
+
 .search-row button:hover:not(:disabled),
+.location-button:hover:not(:disabled),
 .review-link:hover {
   background: #b96216;
   box-shadow: 0 10px 22px rgba(180, 98, 22, 0.24);
@@ -210,10 +222,15 @@ h1 {
 }
 
 .address,
+.distance,
 .phone {
   margin-bottom: 8px;
   color: #6f5542;
   line-height: 1.5;
+}
+
+.distance {
+  font-weight: 800;
 }
 
 .review-link {

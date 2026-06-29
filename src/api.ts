@@ -1,7 +1,12 @@
 import type { BakeriesResponse, Bakery, ErrorResponse } from './types';
 
-export async function searchBakeries(query: string): Promise<Bakery[]> {
-  const response = await fetch(`/api/bakeries?q=${encodeURIComponent(query)}`);
+export interface LocationSearchParams {
+  latitude: number;
+  longitude: number;
+}
+
+async function fetchBakeries(searchParams: URLSearchParams): Promise<Bakery[]> {
+  const response = await fetch(`/api/bakeries?${searchParams.toString()}`);
   const data = (await response.json()) as BakeriesResponse | ErrorResponse;
 
   if (!response.ok) {
@@ -9,4 +14,20 @@ export async function searchBakeries(query: string): Promise<Bakery[]> {
   }
 
   return (data as BakeriesResponse).bakeries;
+}
+
+export async function searchBakeries(query: string): Promise<Bakery[]> {
+  return fetchBakeries(new URLSearchParams({ q: query }));
+}
+
+export async function searchBakeriesByLocation({
+  latitude,
+  longitude,
+}: LocationSearchParams): Promise<Bakery[]> {
+  return fetchBakeries(
+    new URLSearchParams({
+      x: String(longitude),
+      y: String(latitude),
+    }),
+  );
 }
