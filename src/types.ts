@@ -1,18 +1,30 @@
-export interface Bakery {
-  id: string;
-  place_name: string;
-  category_name: string;
-  road_address_name: string;
-  address_name: string;
-  phone: string;
-  place_url: string;
-  distance?: string;
+export type Gender = 'male' | 'female' | 'other';
+
+export interface UserInput {
+  name: string;
+  birthDate: string;
+  birthTime: string;
+  gender: Gender;
 }
 
-export interface BakeriesResponse {
-  bakeries: Bakery[];
-}
-
-export interface ErrorResponse {
+export interface DailyTaboo {
+  dayLabel: string;
+  tabooNumber: string;
+  time: string;
+  place: string;
+  person: string;
+  object: string;
+  action: string;
   message: string;
+}
+
+export interface FortuneResult {
+  title: string;
+  summary: string;
+  avoidColor: string;
+  avoidPlace: string;
+  avoidTime: string;
+  dailyTaboos: DailyTaboo[];
+  absoluteTaboo: string;
+  finalWarning: string;
 }
