@@ -110,6 +110,7 @@ h1 {
 
 .search-row button,
 .location-button,
+.result-controls button,
 .review-link {
   border: 0;
   border-radius: 18px;
@@ -137,6 +138,7 @@ h1 {
 
 .search-row button:hover:not(:disabled),
 .location-button:hover:not(:disabled),
+.result-controls button:hover,
 .review-link:hover {
   background: #b96216;
   box-shadow: 0 10px 22px rgba(180, 98, 22, 0.24);
@@ -179,13 +181,40 @@ h1 {
   font-size: clamp(1.4rem, 5vw, 2rem);
 }
 
-.results-heading span {
+.results-summary {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.results-summary > span {
   flex: 0 0 auto;
   padding: 8px 14px;
   border-radius: 999px;
   background: #fff3df;
   color: #a95e1e;
   font-weight: 800;
+}
+
+.result-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.result-controls button {
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 2px solid #d47a25;
+  background: #fff8ec;
+  color: #b96216;
+}
+
+.result-controls button.active {
+  background: #d47a25;
+  color: #fffaf3;
 }
 
 .bakery-list {
@@ -234,6 +263,18 @@ h1 {
   font-weight: 800;
 }
 
+.card-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.hours-note {
+  margin-bottom: 0;
+  color: #8a6a54;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
 .review-link {
   display: inline-flex;
   align-items: center;
@@ -254,9 +295,19 @@ h1 {
   }
 
   .search-row,
-  .results-heading {
+  .results-heading,
+  .results-summary {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .result-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+
+  .result-controls button {
+    width: 100%;
   }
 
   .search-row button {
