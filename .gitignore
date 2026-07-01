@@ -3,3 +3,21 @@
 node_modules
 dist
 .vercel
+# Capacitor / Android build outputs
+android/.gradle/
+android/.idea/
+android/**/build/
+android/**/outputs/
+android/local.properties
+*.apk
+*.aab
+
+# Android signing secrets
+*.jks
+*.keystore
+*.p12
+*.pfx
+key.properties
+signing.properties
+**/key.properties
+**/signing.properties

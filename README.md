@@ -84,3 +84,43 @@ KAKAO_REST_API_KEY=카카오_REST_API_키
 2. 하단 공유 버튼을 누릅니다.
 3. **홈 화면에 추가**를 선택합니다.
 4. 이름을 확인한 뒤 **추가**를 누릅니다.
+
+## Android 앱 준비 방법 (Capacitor)
+
+이 저장소는 기존 Vite/PWA 웹앱을 유지하면서 Capacitor 기반 Android 앱으로 감쌀 수 있도록 설정되어 있습니다. 이번 단계에서는 Android Studio 프로젝트를 실제로 커밋하지 않고, 로컬에서 필요할 때 생성·동기화할 수 있는 준비만 포함합니다.
+
+### API 주소 설정
+
+웹 배포 환경에서는 기존처럼 같은 origin의 `/api/bakeries`를 호출합니다. Android 앱(WebView)에서는 서버리스 함수가 앱 안에 존재하지 않으므로, 배포된 Vercel 주소를 `VITE_API_BASE_URL`로 지정해야 합니다.
+
+```env
+KAKAO_REST_API_KEY=카카오_REST_API_키
+VITE_API_BASE_URL=https://동네빵집_배포주소.vercel.app
+```
+
+- `VITE_API_BASE_URL` 값이 있으면 프론트엔드는 `https://동네빵집_배포주소.vercel.app/api/bakeries`로 요청합니다.
+- 값이 없으면 기존 웹앱과 동일하게 `/api/bakeries`로 요청합니다.
+- `KAKAO_REST_API_KEY`는 계속 Vercel Function에서만 사용하며, `VITE_` 접두사가 붙은 프론트엔드 환경변수로 만들지 않습니다.
+
+### Android 프로젝트 생성 및 동기화
+
+로컬에서 Android 앱을 준비할 때 아래 순서로 실행합니다.
+
+```bash
+npm install
+npm run build
+npm run cap:add:android
+npm run cap:sync
+npm run cap:open:android
+```
+
+- `npm run cap:add:android`: 로컬 작업 환경에 Capacitor Android 프로젝트를 생성합니다.
+- `npm run cap:sync`: Vite 빌드 결과물(`dist`)과 Capacitor 설정을 Android 프로젝트에 동기화합니다.
+- `npm run cap:open:android`: Android Studio에서 Android 프로젝트를 엽니다.
+
+### APK와 AAB 용도
+
+- APK는 기기 설치 및 내부 공유 테스트용 빌드 파일입니다.
+- AAB(Android App Bundle)는 Google Play Store 등록 및 배포용 빌드 파일입니다.
+
+APK, AAB, keystore, signing 설정 파일 같은 빌드 산출물과 민감 파일은 저장소에 커밋하지 마세요.
