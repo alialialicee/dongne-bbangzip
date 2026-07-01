@@ -115,7 +115,7 @@ function App() {
         <p className="eyebrow">우리 동네 달콤한 산책</p>
         <h1 id="app-title">동네빵집</h1>
         <p className="hero-description">
-          동네 이름을 입력하거나 현재 위치를 허용하면 카카오 Local API로 가까운 빵집을 찾아드려요.
+          동네 이름을 입력하거나 현재 위치를 허용하면 가까운 빵집을 찾아드려요.
         </p>
 
         <form className="search-form" onSubmit={handleSubmit}>
