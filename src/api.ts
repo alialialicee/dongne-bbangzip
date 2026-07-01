@@ -5,8 +5,11 @@ export interface LocationSearchParams {
   longitude: number;
 }
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') ?? '';
+const BAKERIES_API_PATH = `${API_BASE_URL}/api/bakeries`;
+
 async function fetchBakeries(searchParams: URLSearchParams): Promise<Bakery[]> {
-  const response = await fetch(`/api/bakeries?${searchParams.toString()}`);
+  const response = await fetch(`${BAKERIES_API_PATH}?${searchParams.toString()}`);
   const data = (await response.json()) as BakeriesResponse | ErrorResponse;
 
   if (!response.ok) {
